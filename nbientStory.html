@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Short Story</title>
+    <script>
+      var currentPage = 0;
+      var pages = [
+        {
+          text: 'Outside the Prancing Pony  <br>  <br>  <br> Even from the outside the inn looked a pleasant house to familiar eyes. It had a front on the Road, and two wings running back on land partly cut out of the lower slopes of the hill, so that at the rear the second-floor windows were level with the ground. There was a wide arch leading to a courtyard between the two ings, and on the left under the arch there was a large doorway reached by a few broad steps. The door was open and light streamed out of it. Above the arch there was a lamp, and beneath it swung a large signboard: a fat white pony reared up on its hind legs. Over the door was painted in white letters: the prancing pony by barliman butterbur. Many of the lower windows showed lights behind thick curtains.  <br> <br> <br>',
+          audio: "audio1.mp3"
+        },
+        {
+          text: 'Inside the tavern  <br>  <br>  <br> They led their ponies under the arch, and leaving them standing in the yard they climbed up the steps. Frodo went forward and nearly bumped into a short fat man with a bald head and a red face. He had a white apron on, and was bustling out of one door and in through another, carrying a tray laden with full mugs. ‘Can we——’ began Frodo. ‘Half a minute, if you please!’ shouted the man over his shoulder and vanished into a babel of voices and a cloud of smoke. In a moment he was out again, wiping his hands on his apron. ‘Good evening, little master!’ he said, bending down. ‘What may you be wanting?’ ‘Beds for four, and stabling for five ponies, if that can be managed.Are you Mr. Butterbur?’ ‘That’s right! Barliman is my name. Barliman Butterbur at your service! You’re from the Shire, eh?’ he said, and then suddenly he clapped his hand to his forehead, as if trying to remember something. ‘Hobbits!’ he cried. ‘Now what does that remind me of? Might I ask your names, sirs?’ ‘Mr. Took and Mr. Brandybuck,’ said Frodo; ‘and this is Sam Gamgee. My name is Underhill.’ ‘There now!’ said Mr. Butterbur, snapping his fingers. ‘It’s gone again! But it’ll come back, when I have time to think. I’m run off my feet; but I’ll see what I can do for you. We don’t often get a party out of the Shire nowadays, and I should be sorry not to make you welcome. But there is such a crowd already in the house tonight as there hasn’t been for long enough. It never rains but it pours, we say in Bree.’ ‘Hi! Nob!’ he shouted. ‘Where are you, you woolly-footed slowcoach? Nob!’ ‘Coming, sir! Coming!’ A cheery-looking hobbit bobbed out of a door, and seeing the travellers, stopped short and stared at them with great interest  <br> <br> <br>',
+
+          audio: "audio2.mp3"
+        },
+      {
+          text: 'Battle of Helm\'s Deep  <br> <br> <br> For a moment Eomer and Aragorn halted before the gates. The thunder was rumbling in the distance now. The lightning flickered still, far off among the mountains in the South. A keen wind was blowing from the North again. The clouds were torn and drifting, and stars peeped out; and above the hills of the Coomb-side the westering moon rode, glimmering yellow in the storm-wrack. ‘We did not come too soon,’ said Aragorn, looking at the gates. Their great hinges and iron bars were wrenched and bent; many of their timbers were cracked. ‘The doors will not withstand another such battering.’ ‘Yet we cannot stay here beyond the walls to defend them,’ said Eomer. ‘Look!’ He pointed to the causeway. Already a great press For a moment Eomer and Aragorn halted before the gates. The ´ of Orcs and Men were gathering again beyond the stream. Arrows whined, and skipped on the stones about them. ‘Come! We must get back and see what we can do to pile stone and beam across the gates within. Come now!’ They turned and ran. At that moment some dozen Orcs that had lain motionless among the slain leaped to their feet, and came silently and swiftly behind. Two flung themselves to the ground at Eomer’s ´ heels, tripped him, and in a moment they were on top of him. But a small dark figure that none had observed sprang out of the shadows and gave a hoarse shout: Baruk Khazaˆd! Khazaˆd ai-meˆnu! An axe swung and swept back. Two Orcs fell headless. The rest fled  <br> <br> <br>',
+          audio: "audio3_new.mp3"
+        },
+
+      ];
+      var audio = new Audio();
+
+      function displayPage() {
+        document.getElementById("story-text").innerHTML = pages[currentPage].text;
+        audio.src = pages[currentPage].audio;
+      }
+
+      function nextPage() {
+        if (currentPage < pages.length - 1) {
+          currentPage++;
+          displayPage();
+        }
+      }
+
+      function playAudio() {
+        audio.loop = true;
+        audio.play();
+      }
+
+      function stopAudio() {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    </script>
+  </head>
+  <body onload="displayPage()">
+    <div id="story-text"></div>
+    <button onclick="nextPage()">Next Page</button>
+    <button onclick="playAudio()">Play Audio</button>
+    <button onclick="stopAudio()">Stop Audio</button>
+  </body>
+</html>
