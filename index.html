@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Short Story</title>
+    <style>
+      body {
+        font-family: "Georgia", "Times New Roman", serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 2rem;
+        background-color: #f7f5ef;
+        color: #2f2c28;
+      }
+
+      #story-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+        padding: 2.5rem;
+      }
+
+      #story-text h2 {
+        margin-top: 0;
+        font-size: 2rem;
+      }
+
+      #story-text p {
+        text-align: justify;
+        margin-bottom: 1.2rem;
+      }
+
+      #controls {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      button {
+        flex: 1;
+        padding: 0.75rem 1rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #ffffff;
+        background-color: #4a6b82;
+        border: none;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+      }
+
+      button:hover {
+        background-color: #3a5567;
+        transform: translateY(-1px);
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        background-color: #9aaab5;
+      }
+    </style>
+    <script>
+      const pages = [
+        {
+          title: "Outside the Prancing Pony",
+          paragraphs: [
+            "Even from the outside the inn looked a pleasant house to familiar eyes. It had a front on the Road, and two wings running back on land partly cut out of the lower slopes of the hill, so that at the rear the second-floor windows were level with the ground.",
+            "There was a wide arch leading to a courtyard between the two wings, and on the left under the arch there was a large doorway reached by a few broad steps. The door was open and light streamed out of it.",
+            "Above the arch there was a lamp, and beneath it swung a large signboard: a fat white pony reared up on its hind legs. Over the door was painted in white letters: The Prancing Pony by Barliman Butterbur. Many of the lower windows showed lights behind thick curtains."
+          ],
+          audio: "https://mattyanko.github.io/nbient/audiotest2.wav"
+        },
+        {
+          title: "Inside the Tavern",
+          paragraphs: [
+            "They led their ponies under the arch, and leaving them standing in the yard they climbed up the steps. Frodo went forward and nearly bumped into a short fat man with a bald head and a red face.",
+            "He had a white apron on, and was bustling out of one door and in through another, carrying a tray laden with full mugs. &quot;Can we—’ began Frodo. &quot;Half a minute, if you please!&quot; shouted the man over his shoulder and vanished into a babel of voices and a cloud of smoke.",
+            "In a moment he was out again, wiping his hands on his apron. &quot;Good evening, little master!&quot; he said, bending down. &quot;What may you be wanting?&quot; &quot;Beds for four, and stabling for five ponies, if that can be managed. Are you Mr. Butterbur?&quot; &quot;That’s right! Barliman is my name. Barliman Butterbur at your service!&quot;"
+          ],
+          audio: "https://mattyanko.github.io/nbient/audio2.wav"
+        },
+        {
+          title: "Battle of Helm's Deep",
+          paragraphs: [
+            "For a moment Eomer and Aragorn halted before the gates. The thunder was rumbling in the distance now. The lightning flickered still, far off among the mountains in the south.",
+            "A keen wind was blowing from the north again. The clouds were torn and drifting, and stars peeped out; and above the hills of the Coomb-side the westering moon rode, glimmering yellow in the storm-wrack.",
+            "&quot;We did not come too soon,&quot; said Aragorn, looking at the gates. &quot;Their great hinges and iron bars were wrenched and bent; many of their timbers were cracked. The doors will not withstand another such battering.&quot;"
+          ],
+          audio: "https://mattyanko.github.io/nbient/audioBattlewav.wav"
+        }
+      ];
+
+      let currentPage = 0;
+      const audio = new Audio();
+
+      function renderPage() {
+        const storyText = document.getElementById("story-text");
+        const { title, paragraphs, audio: audioSrc } = pages[currentPage];
+
+        storyText.innerHTML = `
+          <h2>${title}</h2>
+          ${paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join("")}
+        `;
+
+        playAudioFor(audioSrc);
+        updateControls();
+      }
+
+      function playAudioFor(source) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.src = source;
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Autoplay can be blocked until the user interacts with the page.
+            // The play button remains available so the user can manually start playback.
+          });
+        }
+      }
+
+      function nextPage() {
+        if (currentPage < pages.length - 1) {
+          currentPage += 1;
+          renderPage();
+        }
+      }
+
+      function previousPage() {
+        if (currentPage > 0) {
+          currentPage -= 1;
+          renderPage();
+        }
+      }
+
+      function toggleAudio() {
+        if (audio.paused) {
+          audio.play();
+        } else {
+          audio.pause();
+        }
+      }
+
+      function updateControls() {
+        document.getElementById("prev-btn").disabled = currentPage === 0;
+        document.getElementById("next-btn").disabled = currentPage === pages.length - 1;
+        document.getElementById("audio-status").textContent = audio.paused ? "Audio paused" : "Audio playing";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        renderPage();
+        audio.addEventListener("play", updateControls);
+        audio.addEventListener("pause", updateControls);
+        audio.addEventListener("ended", updateControls);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="story-container">
+      <div id="story-text"></div>
+      <div id="controls">
+        <button id="prev-btn" onclick="previousPage()">Previous Page</button>
+        <button onclick="toggleAudio()">Play / Pause Audio</button>
+        <button id="next-btn" onclick="nextPage()">Next Page</button>
+      </div>
+      <p id="audio-status" style="margin-top: 1rem; font-style: italic;">Audio paused</p>
+    </div>
+  </body>
+</html>
